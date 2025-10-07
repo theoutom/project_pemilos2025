@@ -1,6 +1,7 @@
 // Fungsi global untuk update suara (dipanggil dari onclick di HTML)
 function updateSuara(kandidat, delta) {
-    const input = document.getElementById(kandidat === 'tidakSah' ? 'tidakSah' : `kandidat${kandidat}`);
+    const inputId = kandidat === 'tidakSah' ? 'tidakSah' : `kandidat${kandidat}`;
+    const input = document.getElementById(inputId);
     let current = parseInt(input.value) || 0;
     current = Math.max(0, current + delta); // Tidak boleh negatif
     input.value = current;
@@ -61,10 +62,20 @@ function displayResults(containerId, isPreview = false) {
         
         container.innerHTML = html;
         
-        // Tampilkan export jika di hasil.html
+        // Tampilkan tombol simpan/export jika di hasil.html
         if (!isPreview) {
+            const saveBtn = document.getElementById('saveBtn');
             const exportBtn = document.getElementById('exportBtn');
-            exportBtn.style.display = 'block';
+            saveBtn.style.display = 'inline-block';
+            exportBtn.style.display = 'inline-block';
+            
+            // Event untuk simpan ulang di hasil.html (re-save data saat ini)
+            saveBtn.onclick = function() {
+                saveData(data);
+                alert('Data disimpan ulang!');
+            };
+            
+            // Event export
             exportBtn.onclick = function() {
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -79,6 +90,7 @@ function displayResults(containerId, isPreview = false) {
         document.getElementById('previewLoading').textContent = 'Mulai hitung suara untuk lihat preview...';
     } else {
         container.innerHTML = '<p>Belum ada data. Input dulu di halaman input.</p>';
+        document.getElementById('saveBtn').style.display = 'none';
         document.getElementById('exportBtn').style.display = 'none';
     }
 }
@@ -114,10 +126,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('kandidatC').value = data.C;
     document.getElementById('tidakSah').value = data.tidakSah;
     
-    // Event listener untuk input manual (jika diedit langsung, meski readonly)
+    // Event listener untuk input manual
     ['kandidatA', 'kandidatB', 'kandidatC', 'tidakSah'].forEach(id => {
         document.getElementById(id).addEventListener('input', saveAndUpdatePreview);
     });
+    
+    // Tombol simpan di index.html
+    const saveBtnIndex = document.getElementById('saveBtn');
+    if (saveBtnIndex) {
+        saveBtnIndex.addEventListener('click', function() {
+            saveAndUpdatePreview();
+            alert('Hasil disimpan!');
+        });
+    }
     
     // Reset button di index.html
     const resetBtn = document.getElementById('resetBtn');
@@ -153,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Cek jika timestamp berubah
             if (currentData.timestamp !== (JSON.parse(localStorage.getItem('lastDisplayTimestamp')) || 0)) {
                 displayResults('hasilContainer', false);
-                localStorage.setItem('lastDisplayTimestamp', currentData.timestamp);
+                localStorage.setItem('lastDisplayTimestamp', currentData.timestamp.toString());
             }
         }, 2000);
     }

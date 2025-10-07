@@ -16,7 +16,7 @@
                 <label for="kandidatA">Suara Kandidat A:</label>
                 <div class="counter">
                     <button type="button" onclick="updateSuara('A', -1)">-</button>
-                    <input type="number" id="kandidatA" min="0" value="0" readonly>
+                    <input type="number" id="kandidatA" min="0" value="0">
                     <button type="button" onclick="updateSuara('A', 1)">+</button>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <label for="kandidatB">Suara Kandidat B:</label>
                 <div class="counter">
                     <button type="button" onclick="updateSuara('B', -1)">-</button>
-                    <input type="number" id="kandidatB" min="0" value="0" readonly>
+                    <input type="number" id="kandidatB" min="0" value="0">
                     <button type="button" onclick="updateSuara('B', 1)">+</button>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 <label for="kandidatC">Suara Kandidat C:</label>
                 <div class="counter">
                     <button type="button" onclick="updateSuara('C', -1)">-</button>
-                    <input type="number" id="kandidatC" min="0" value="0" readonly>
+                    <input type="number" id="kandidatC" min="0" value="0">
                     <button type="button" onclick="updateSuara('C', 1)">+</button>
                 </div>
             </div>
@@ -40,10 +40,11 @@
                 <label for="tidakSah">Suara Tidak Sah:</label>
                 <div class="counter">
                     <button type="button" onclick="updateSuara('tidakSah', -1)">-</button>
-                    <input type="number" id="tidakSah" min="0" value="0" readonly>
+                    <input type="number" id="tidakSah" min="0" value="0">
                     <button type="button" onclick="updateSuara('tidakSah', 1)">+</button>
                 </div>
             </div>
+            <button id="saveBtn">Simpan Hasil</button>
             <button id="resetBtn">Reset Semua ke 0</button>
         </div>
         

@@ -83,9 +83,18 @@ label {
     background: #f8f9fa;
 }
 
+#saveBtn {
+    background: #007BFF; /* Biru untuk simpan */
+    margin: 10px 5px;
+}
+
+#saveBtn:hover {
+    background: #0056b3;
+}
+
 #resetBtn {
     background: #6c757d; /* Abu untuk reset */
-    margin-top: 20px;
+    margin: 10px 5px;
 }
 
 #resetBtn:hover {
@@ -93,12 +102,12 @@ label {
 }
 
 #exportBtn {
-    background: #007BFF;
-    margin: 10px 0;
+    background: #28a745; /* Hijau untuk export */
+    margin: 10px 5px;
 }
 
 #exportBtn:hover {
-    background: #0056b3;
+    background: #218838;
 }
 
 .preview-item, .result-item {
