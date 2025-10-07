@@ -9,29 +9,50 @@
 <body>
     <div class="container">
         <h1>Pemilihan Ketua OSIS SMPN 19 Surakarta</h1>
-        <p>Masukkan hasil penghitungan suara fisik (total estimasi 800 pemilih).</p>
+        <p>Gunakan tombol + / - untuk hitung suara fisik secara real-time (total estimasi 800 pemilih).</p>
         
-        <form id="inputForm">
+        <div class="input-section">
             <div class="input-group">
                 <label for="kandidatA">Suara Kandidat A:</label>
-                <input type="number" id="kandidatA" min="0" value="0" required>
+                <div class="counter">
+                    <button type="button" onclick="updateSuara('A', -1)">-</button>
+                    <input type="number" id="kandidatA" min="0" value="0" readonly>
+                    <button type="button" onclick="updateSuara('A', 1)">+</button>
+                </div>
             </div>
             <div class="input-group">
                 <label for="kandidatB">Suara Kandidat B:</label>
-                <input type="number" id="kandidatB" min="0" value="0" required>
+                <div class="counter">
+                    <button type="button" onclick="updateSuara('B', -1)">-</button>
+                    <input type="number" id="kandidatB" min="0" value="0" readonly>
+                    <button type="button" onclick="updateSuara('B', 1)">+</button>
+                </div>
             </div>
             <div class="input-group">
                 <label for="kandidatC">Suara Kandidat C:</label>
-                <input type="number" id="kandidatC" min="0" value="0" required>
+                <div class="counter">
+                    <button type="button" onclick="updateSuara('C', -1)">-</button>
+                    <input type="number" id="kandidatC" min="0" value="0" readonly>
+                    <button type="button" onclick="updateSuara('C', 1)">+</button>
+                </div>
             </div>
             <div class="input-group">
                 <label for="tidakSah">Suara Tidak Sah:</label>
-                <input type="number" id="tidakSah" min="0" value="0" required>
+                <div class="counter">
+                    <button type="button" onclick="updateSuara('tidakSah', -1)">-</button>
+                    <input type="number" id="tidakSah" min="0" value="0" readonly>
+                    <button type="button" onclick="updateSuara('tidakSah', 1)">+</button>
+                </div>
             </div>
-            <button type="submit">Hitung dan Simpan Hasil</button>
-        </form>
+            <button id="resetBtn">Reset Semua ke 0</button>
+        </div>
         
-        <p><a href="hasil.html">Lihat Hasil (jika sudah diinput)</a></p>
+        <div id="previewContainer">
+            <h2>Preview Hasil Real-Time</h2>
+            <p id="previewLoading">Mulai hitung suara untuk lihat preview...</p>
+        </div>
+        
+        <p><a href="hasil.html">Buka Halaman Hasil Penuh</a></p>
     </div>
     <script src="script.js"></script>
 </body>
