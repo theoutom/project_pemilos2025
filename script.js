@@ -6,21 +6,30 @@ function updateSuara(kandidat, delta) {
     current = Math.max(0, current + delta); // Tidak boleh negatif
     input.value = current;
     saveAndUpdatePreview(); // Auto-save dan update preview
+    console.log('Update suara:', kandidat, 'delta:', delta, 'new value:', current); // Debug log
 }
 
 // Fungsi untuk load data dari localStorage
 function loadData() {
-    return JSON.parse(localStorage.getItem('suaraData')) || { A: 0, B: 0, C: 0, tidakSah: 0, totalValid: 0, totalSemua: 0, timestamp: Date.now() };
+    const data = JSON.parse(localStorage.getItem('suaraData')) || { A: 0, B: 0, C: 0, tidakSah: 0, totalValid: 0, totalSemua: 0, timestamp: Date.now() };
+    console.log('Loaded data:', data); // Debug log
+    return data;
 }
 
 // Fungsi untuk simpan data ke localStorage
 function saveData(data) {
     localStorage.setItem('suaraData', JSON.stringify(data));
+    console.log('Saved data:', data); // Debug log
 }
 
 // Fungsi untuk hitung dan tampilkan preview/hasil
 function displayResults(containerId, isPreview = false) {
+    console.log('Display results called for:', containerId, 'isPreview:', isPreview); // Debug log
     const container = document.getElementById(containerId);
+    if (!container) {
+        console.error('Container not found:', containerId);
+        return;
+    }
     const data = loadData();
     const totalValid = data.A + data.B + data.C;
     const totalSemua = totalValid + data.tidakSah;
@@ -61,37 +70,52 @@ function displayResults(containerId, isPreview = false) {
         }
         
         container.innerHTML = html;
+        console.log('Results displayed:', html); // Debug log
         
         // Tampilkan tombol simpan/export jika di hasil.html
         if (!isPreview) {
             const saveBtn = document.getElementById('saveBtn');
             const exportBtn = document.getElementById('exportBtn');
-            saveBtn.style.display = 'inline-block';
-            exportBtn.style.display = 'inline-block';
+            if (saveBtn) saveBtn.style.display = 'inline-block';
+            if (exportBtn) exportBtn.style.display = 'inline-block';
             
-            // Event untuk simpan ulang di hasil.html (re-save data saat ini)
-            saveBtn.onclick = function() {
-                saveData(data);
-                alert('Data disimpan ulang!');
-            };
+            // Event untuk simpan ulang di hasil.html
+            if (saveBtn) {
+                saveBtn.onclick = function() {
+                    saveData(data);
+                    alert('Data disimpan ulang!');
+                };
+            }
             
             // Event export
-            exportBtn.onclick = function() {
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'data-suara-osis.json';
-                a.click();
-                URL.revokeObjectURL(url);
-            };
+            if (exportBtn) {
+                exportBtn.onclick = function() {
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'data-suara-osis.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                };
+            }
         }
     } else if (isPreview) {
         document.getElementById('previewLoading').textContent = 'Mulai hitung suara untuk lihat preview...';
     } else {
-        container.innerHTML = '<p>Belum ada data. Input dulu di halaman input.</p>';
-        document.getElementById('saveBtn').style.display = 'none';
-        document.getElementById('exportBtn').style.display = 'none';
+        const loadingEl = document.getElementById('loading');
+        if (loadingEl) {
+            loadingEl.innerHTML = '<p>Belum ada data. Input dulu di halaman input.</p>';
+        } else {
+            container.innerHTML = '<p>Belum ada data. Input dulu di halaman input.</p>';
+        }
+        if (!isPreview) {
+            const saveBtn = document.getElementById('saveBtn');
+            const exportBtn = document.getElementById('exportBtn');
+            if (saveBtn) saveBtn.style.display = 'none';
+            if (exportBtn) exportBtn.style.display = 'none';
+        }
+        console.log('No data to display'); // Debug log
     }
 }
 
@@ -115,25 +139,30 @@ function saveAndUpdatePreview() {
         timestamp: Date.now()
     };
     saveData(data);
-    displayResults('previewContainer', true); // Update preview real-time
+    if (document.getElementById('previewContainer')) {
+        displayResults('previewContainer', true); // Update preview real-time
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded'); // Debug log
     // Load data awal dan set input values
     const data = loadData();
-    document.getElementById('kandidatA').value = data.A;
-    document.getElementById('kandidatB').value = data.B;
-    document.getElementById('kandidatC').value = data.C;
-    document.getElementById('tidakSah').value = data.tidakSah;
+    const inputs = ['kandidatA', 'kandidatB', 'kandidatC', 'tidakSah'];
+    inputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) input.value = data[id === 'tidakSah' ? 'tidakSah' : id.substring(8).toUpperCase()] || 0;
+    });
     
     // Event listener untuk input manual
-    ['kandidatA', 'kandidatB', 'kandidatC', 'tidakSah'].forEach(id => {
-        document.getElementById(id).addEventListener('input', saveAndUpdatePreview);
+    inputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) input.addEventListener('input', saveAndUpdatePreview);
     });
     
     // Tombol simpan di index.html
     const saveBtnIndex = document.getElementById('saveBtn');
-    if (saveBtnIndex) {
+    if (saveBtnIndex && document.getElementById('previewContainer')) {
         saveBtnIndex.addEventListener('click', function() {
             saveAndUpdatePreview();
             alert('Hasil disimpan!');
@@ -144,10 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', function() {
-            document.getElementById('kandidatA').value = 0;
-            document.getElementById('kandidatB').value = 0;
-            document.getElementById('kandidatC').value = 0;
-            document.getElementById('tidakSah').value = 0;
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = 0;
+            });
             saveAndUpdatePreview();
             alert('Data direset!');
         });
@@ -163,18 +192,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Real-time listener untuk perubahan localStorage (dari tab lain)
     window.addEventListener('storage', function(e) {
         if (e.key === 'suaraData') {
-            location.reload(); // Reload untuk update (simple & efektif)
+            console.log('Storage changed, reloading...'); // Debug log
+            location.reload();
         }
     });
     
-    // Auto-poll setiap 2 detik untuk update di hasil.html (backup jika StorageEvent gagal di browser lama)
+    // Auto-poll setiap 2 detik untuk update di hasil.html (perbaiki: check data setiap kali)
     if (document.getElementById('hasilContainer')) {
+        let lastTimestamp = parseInt(localStorage.getItem('lastDisplayTimestamp')) || 0;
         setInterval(function() {
             const currentData = loadData();
-            // Cek jika timestamp berubah
-            if (currentData.timestamp !== (JSON.parse(localStorage.getItem('lastDisplayTimestamp')) || 0)) {
+            if (currentData.timestamp > lastTimestamp || lastTimestamp === 0) {
+                console.log('Auto-poll update detected'); // Debug log
                 displayResults('hasilContainer', false);
-                localStorage.setItem('lastDisplayTimestamp', currentData.timestamp.toString());
+                lastTimestamp = currentData.timestamp;
+                localStorage.setItem('lastDisplayTimestamp', lastTimestamp.toString());
             }
         }, 2000);
     }
