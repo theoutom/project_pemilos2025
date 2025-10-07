@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Suara - Pemilihan Ketua OSIS SMPN 19 Surakarta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pemilihan Ketua OSIS SMPN 19 Surakarta</h1>
+        <p>Masukkan hasil penghitungan suara fisik (total estimasi 800 pemilih).</p>
+        
+        <form id="inputForm">
+            <div class="input-group">
+                <label for="kandidatA">Suara Kandidat A:</label>
+                <input type="number" id="kandidatA" min="0" value="0" required>
+            </div>
+            <div class="input-group">
+                <label for="kandidatB">Suara Kandidat B:</label>
+                <input type="number" id="kandidatB" min="0" value="0" required>
+            </div>
+            <div class="input-group">
+                <label for="kandidatC">Suara Kandidat C:</label>
+                <input type="number" id="kandidatC" min="0" value="0" required>
+            </div>
+            <div class="input-group">
+                <label for="tidakSah">Suara Tidak Sah:</label>
+                <input type="number" id="tidakSah" min="0" value="0" required>
+            </div>
+            <button type="submit">Hitung dan Simpan Hasil</button>
+        </form>
+        
+        <p><a href="hasil.html">Lihat Hasil (jika sudah diinput)</a></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
