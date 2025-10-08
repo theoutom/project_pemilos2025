@@ -7,18 +7,15 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 1200px; /* Container utama lebih lebar untuk layout horizontal */
     margin: 0 auto;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1); /* Shadow biru ringan */
-    text-align: center;
+    padding: 20px;
 }
 
 h1 {
     color: #007BFF; /* Biru sekolah */
     font-size: 2em;
+    text-align: center;
 }
 
 h2 {
@@ -27,44 +24,59 @@ h2 {
 }
 
 .input-section {
+    display: flex; /* Gunakan flexbox untuk membuat input-group bersebelahan */
+    flex-wrap: wrap; /* Wrap ke baris baru jika layar kecil */
+    justify-content: space-around; /* Sebarkan secara merata */
+    align-items: flex-start;
     margin-bottom: 20px;
+    gap: 20px; /* Jarak antar grup */
 }
 
 .input-group {
-    margin: 20px 0;
+    flex: 1; /* Setiap grup mengambil ruang sama */
+    min-width: 200px; /* Minimum lebar untuk mencegah terlalu sempit */
+    max-width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1); /* Shadow biru ringan */
     text-align: center;
 }
 
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     color: #007BFF;
 }
 
-#imageKan {
-    width: 50%;
+#imageA, #imageB, #imageC {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin: 0 auto 10px;
+    display: block;
+    border-radius: 5px;
+}
+
+#imageX {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto 10px;
+    display: block;
+    border-radius: 5px;
+}
+
+/* Tidak ada gambar untuk tidak sah, jadi kosongkan selector ini jika perlu */
+
+.counter {
+    display: flex;
     align-items: center;
-}
-
-@media (min-width: 1000px) {
-    .counter {
-        display: flex;
-        align-items: center;
-        width: 150%;
-        max-width: 200px;
-        margin: auto 312px;
-    }
-}
-
-@media (max-width: 999px) {
-    .counter {
-        display: flex;
-        align-items: center;
-        width: 150%;
-        max-width: 200px;
-        margin: auto auto;
-    }
+    justify-content: center;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
 }
 
 .counter button {
@@ -77,11 +89,13 @@ label {
     border-radius: 5px 0 0 5px; /* Rounded kiri untuk - */
     width: 40px;
     height: 40px;
+    flex-shrink: 0; /* Jangan shrink tombol */
 }
 
 .counter button:nth-child(3) {
     background: #28a745; /* Hijau untuk + */
     border-radius: 0 5px 5px 0; /* Rounded kanan untuk + */
+    margin-left: 0; /* Hapus margin jika ada */
 }
 
 .counter button:hover {
@@ -89,7 +103,7 @@ label {
 }
 
 .counter input {
-    width: 100px;
+    width: 80px; /* Sesuaikan lebar input agar pas */
     padding: 10px;
     border: 2px solid #007BFF;
     border-left: none;
@@ -98,11 +112,29 @@ label {
     font-size: 16px;
     box-sizing: border-box;
     background: #f8f9fa;
+    flex: 1; /* Input mengisi ruang tengah */
+    min-width: 60px;
 }
 
-#saveBtn {
+.button-section {
+    display: flex; /* Flex untuk tombol bersebelahan */
+    justify-content: center; /* Terpusat horizontal */
+    align-items: center;
+    gap: 15px; /* Jarak antar tombol */
+    margin: 20px 0; /* Jarak dari input-section dan preview */
+    flex-wrap: wrap; /* Wrap jika layar sangat kecil */
+}
+
+#saveBtn, #resetBtn {
     background: #007BFF; /* Biru untuk simpan */
-    margin: 10px 5px;
+    color: white;
+    border: none;
+    padding: 12px 24px; /* Padding lebih lebar untuk tombol utama */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    min-width: 150px; /* Minimum lebar agar konsisten */
+    transition: background 0.3s ease; /* Smooth hover */
 }
 
 #saveBtn:hover {
@@ -111,7 +143,6 @@ label {
 
 #resetBtn {
     background: #6c757d; /* Abu untuk reset */
-    margin: 10px 5px;
 }
 
 #resetBtn:hover {
@@ -119,7 +150,7 @@ label {
 }
 
 #exportBtn {
-    background: #28a745; /* Hijau untuk export */
+    background: #28a745; /* Hijau untuk export, jika ada */
     margin: 10px 5px;
 }
 
@@ -145,6 +176,9 @@ label {
     border-top: 2px solid #007BFF;
     padding-top: 20px;
     margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 a {
@@ -156,16 +190,44 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Responsif untuk layar proyeksi besar */
-@media (min-width: 768px) {
-    .container {
-        max-width: 800px;
-        padding: 40px;
+/* Responsif: Stack vertikal di layar kecil (mobile) */
+@media (max-width: 768px) {
+    .input-section {
+        flex-direction: column;
+        align-items: center;
     }
+    
+    .input-group {
+        max-width: 300px; /* Lebar penuh di mobile */
+        width: 100%;
+    }
+    
+    .button-section {
+        flex-direction: column; /* Stack tombol vertikal di mobile */
+        gap: 10px;
+    }
+    
+    #saveBtn, #resetBtn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+}
+
+/* Responsif untuk layar proyeksi besar */
+@media (min-width: 1000px) {
+    .input-group {
+        max-width: 220px;
+    }
+    
     h1 {
         font-size: 2.5em;
     }
-    .counter {
-        max-width: 250px;
+    
+    .button-section {
+        gap: 20px;
     }
 }
