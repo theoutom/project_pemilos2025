@@ -125,7 +125,7 @@ label {
     flex-wrap: wrap; /* Wrap jika layar sangat kecil */
 }
 
-#saveBtn, #resetBtn {
+#saveBtn, #resetBtn, #exportBtn {
     background: #007BFF; /* Biru untuk simpan */
     color: white;
     border: none;
