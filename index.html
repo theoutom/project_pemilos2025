@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Suara - Pemilihan Ketua OSIS SMPN 19 Surakarta</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Pemilihan Ketua OSIS SMPN 19 Surakarta</h1>
         <p>Gunakan tombol + / - untuk hitung suara fisik secara real-time (total estimasi 800 pemilih).</p>
-        
+
         <div class="input-section">
             <div class="input-group">
                 <label for="kandidatA">Suara Kandidat A:</label>
+                <img id="imageKan" src="image/Kan1.jpeg" alt="Putriana Wahyu Utami">
                 <div class="counter">
                     <button type="button" onclick="updateSuara('A', -1)">-</button>
                     <input type="number" id="kandidatA" min="0" value="0">
@@ -22,6 +25,7 @@
             </div>
             <div class="input-group">
                 <label for="kandidatB">Suara Kandidat B:</label>
+                <img id="imageKan" src="image/Kan2.jpeg" alt="Ismail Maulana Ibrahim">
                 <div class="counter">
                     <button type="button" onclick="updateSuara('B', -1)">-</button>
                     <input type="number" id="kandidatB" min="0" value="0">
@@ -30,6 +34,7 @@
             </div>
             <div class="input-group">
                 <label for="kandidatC">Suara Kandidat C:</label>
+                <img id="imageKan" src="image/Kan3.jpeg" alt="Putri Ayu Larasati">
                 <div class="counter">
                     <button type="button" onclick="updateSuara('C', -1)">-</button>
                     <input type="number" id="kandidatC" min="0" value="0">
@@ -47,14 +52,15 @@
             <button id="saveBtn">Simpan Hasil</button>
             <button id="resetBtn">Reset Semua ke 0</button>
         </div>
-        
+
         <div id="previewContainer">
             <h2>Preview Hasil Real-Time</h2>
             <p id="previewLoading">Mulai hitung suara untuk lihat preview...</p>
         </div>
-        
+
         <p><a href="hasil.html">Buka Halaman Hasil Penuh</a></p>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
