@@ -42,9 +42,9 @@ function displayResults(containerId, isPreview = false) {
         
         // Urutkan kandidat
         const kandidat = [
-            { nama: 'A', suara: data.A, persen: persenA },
-            { nama: 'B', suara: data.B, persen: persenB },
-            { nama: 'C', suara: data.C, persen: persenC }
+            { nama: "1: Putriana Wahyu Utami", suara: data.A, persen: persenA },
+            { nama: '2: Ismail Maulana Ibrahim', suara: data.B, persen: persenB },
+            { nama: '3: Putri Ayu Larasati', suara: data.C, persen: persenC }
         ].sort((a, b) => b.suara - a.suara);
         
         let html = `
